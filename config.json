@@ -1,0 +1,5 @@
+{
+    "arch": "amd64",
+    "debian_mirror_src": "http://ftp.uk.debian.org/debian/dists/stable/main/",
+    "top_k_statistic": 10
+}
