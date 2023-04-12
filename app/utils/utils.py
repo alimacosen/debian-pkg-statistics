@@ -1,6 +1,7 @@
-from config import Config
+from app.config import Config
 
 config = Config()
+
 
 def calc_indent_space() -> int:
     k_statistics = config.get_statistics_num()

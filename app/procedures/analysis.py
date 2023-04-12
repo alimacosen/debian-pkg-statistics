@@ -1,12 +1,18 @@
-from config import Config
-from models import *
-from utils.utils import calc_indent_space
+from app.config import Config
+from app.models import *
+from app.utils.utils import calc_indent_space
 
 config = Config()
 
+
 def get_packages_cnt() -> None:
-    # TODO
-    """
+    """ Organize each stage and show the output of the statistics.
+
+        Args:
+            None
+
+        Returns:
+            None
     """
     arch = config.get_arch()
     k_statistics = config.get_statistics_num()
@@ -23,7 +29,7 @@ def get_packages_cnt() -> None:
 
     print(f"Top {k_statistics} packages with the most files for {arch}:\n")
     print(f"{'':<{indent_space}} {'Package name':<{package_name_space}} {'Num of files':<{files_num_space}}")
-    
     for package, count in package_counts.most_common(k_statistics):
         print(f"{str(index_number) + '.':<{indent_space}} {package:<{package_name_space}} {count:<{files_num_space}}")
         index_number += 1
+    print("\n")
