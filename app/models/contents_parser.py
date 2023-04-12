@@ -1,7 +1,7 @@
 from collections import Counter
 
 class Parser:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
         # TODO
 

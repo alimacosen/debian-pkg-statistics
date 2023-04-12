@@ -2,13 +2,16 @@ from urllib.parse import urljoin
 import requests
 import gzip
 from config import Config
-import sys, os
+import sys
 
 class Downloader:
-    def __init__(self, settings: Config):
+    # TODO
+    """
+    """
+    def __init__(self, settings: Config) -> None:
         self.settings = settings
 
-    def change_config(self, settings: Config):
+    def change_config(self, settings: Config) -> "Downloader":
         self.settings = settings
         return self
     
@@ -29,5 +32,5 @@ class Downloader:
         try:
             decompressed_contents = gzip.decompress(response.content).decode()
         except (TypeError, gzip.BadGzipFile, UnicodeDecodeError) as e:
-            exit(f"Error decompressing or decoding Contents file:\n{e}")
+            sys.exit(f"Error decompressing or decoding Contents file:\n{e}")
         return decompressed_contents

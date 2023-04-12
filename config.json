@@ -3,5 +3,6 @@
     "debian_mirror_src": "http://ftp.uk.debian.org/debian/dists/stable/main/",
     "top_k_statistic": 10,
     "package_name_space": 50,
-    "files_num_space": 10
+    "files_num_space": 10,
+    "minimum_statistic_num": 1
 }

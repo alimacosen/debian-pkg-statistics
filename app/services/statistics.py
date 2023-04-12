@@ -1,19 +1,16 @@
 from config import Config
 from models import *
+from utils.utils import calc_indent_space
 
 config = Config()
 
-def calc_indent_space() -> int:
-    k_statistics = config.get_statistics_num()
-    num_digits = len(str(k_statistics))
-    return num_digits + 1
-
-def get_packages_cnt():
+def get_packages_cnt() -> None:
     # TODO
     """
     """
     arch = config.get_arch()
     k_statistics = config.get_statistics_num()
+
     indent_space = calc_indent_space()
     package_name_space = config.get_package_name_space()
     files_num_space = config.get_files_num_space()
