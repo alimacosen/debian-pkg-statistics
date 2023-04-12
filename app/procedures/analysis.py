@@ -1,5 +1,5 @@
 from app.config import Config
-from app.models import *
+from app.components import *
 from app.utils.utils import calc_indent_space
 
 config = Config()
