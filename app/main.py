@@ -1,11 +1,11 @@
 import argparse
-from settings import Settings
-from downloader import Downloader
+from config import Config
+from services.statistics import get_packages_cnt
 
 def parse_args():
     """
     """
-    settings = Settings()
+    settings = Config()
     parser = argparse.ArgumentParser(description="Debain contents indices statistical analyzer.")
     parser.add_argument("-a", "--arch",type=str, required=True, help="Target architecture of the contents indices file (e.g. amd64, arm64, mips64el, i386)")
     parser.add_argument("-s", "--source", type=str, default=settings.get_mirror_src(), help="Debian mirror source")
@@ -16,20 +16,16 @@ def parse_args():
 def update_settings(args):
     """
     """
-    settings = Settings()
+    settings = Config()
     settings.set_arch(args.arch)
     settings.set_mirror_src(args.source)
+    # TODO negative check
     settings.set_statistic_num(args.K)
 
 def main():
     args = parse_args()
     update_settings(args)
-    # TODO processor
-    settings = Settings()
-    d = Downloader()
-    d.download_contents_file(settings.get_arch(), settings.get_mirror_src())
-    # settings = Settings()
-    # print(settings._config)
+    get_packages_cnt()
 
 
 if __name__ == "__main__":

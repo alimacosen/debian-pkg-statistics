@@ -1,6 +1,6 @@
 import json
 
-class Settings:
+class Config:
     """
     The global setting of this application.
     """
@@ -11,7 +11,7 @@ class Settings:
     @classmethod
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "instance"):
-            cls.instance = super(Settings, cls).__new__(cls)
+            cls.instance = super(Config, cls).__new__(cls)
         return cls.instance
 
     def __init__(self):
@@ -19,17 +19,23 @@ class Settings:
             self._load_config()
 
     def _load_config(self):
-        with open(Settings._config_file_path, "r") as config_file:
+        with open(Config._config_file_path, "r") as config_file:
             self._config = json.loads(config_file.read())
 
-    def get_arch(self):
+    def get_arch(self) -> str:
         return self._config["arch"]
     
-    def get_mirror_src(self):
+    def get_mirror_src(self) -> str:
         return self._config["debian_mirror_src"]
     
-    def get_statistics_num(self):
+    def get_statistics_num(self) -> int:
         return self._config["top_k_statistic"]
+    
+    def get_package_name_space(self) -> int:
+        return self._config["package_name_space"]
+    
+    def get_files_num_space(self) -> int:
+        return self._config["files_num_space"]
     
     def set_arch(self, arch):
         self._config["arch"] = arch
