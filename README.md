@@ -1,22 +1,22 @@
-# Debian Repository Contents File Package Statistics
+# Debian Repository Contents File Packages Statistics
 
 ## 1. Description
 Debian uses *.deb packages to deploy and upgrade software. The packages are stored in Debian repositories and each repository contains "Contents index". You can refer to [Debian mirror](http://ftp.uk.debian.org/debian/dists/stable/main/) to have an overall knowledge of the Contents indices.  
 
 This application is a python command line tool that takes the architecture (amd64, arm64, mips etc.) as an argument and downloads the compressed gzip Contents file associated with it from a Debian mirror. Then the application parses the file and output the statistics of the top 10 (by default) packages that have the most files associated with them.  
 
-You can refer to [Description of contents file format](https://wiki.debian.org/RepositoryFormat#A.22Contents.22_indices) and check `5. Development Thoughts` in this README file for more information.
+You can refer to [Description of contents file format](https://wiki.debian.org/RepositoryFormat#A.22Contents.22_indices) and check `5.Development Thoughts` in this README file for more information.
 
 ## 2. Installation
 
-### Use built-in virtual environment
+### Option 1: Use the virtual environment provided
 There is already a python virtual environment with all the dependencies needed under the root directory called `envdebian`. You can run the following command in the ternimal to activate the virtual environment.
 
 ```shell
 source envdebian/bin/activate
 ```
 
-### Run in other python environment
+### Option2 : Run in other python environments
 If you prefer not to use the virtual environment provided, you can run the following command in any python3 (3.9 recommended) environment
 ```shell
 python3 -m pip install -r requirements.txt
@@ -123,10 +123,24 @@ In this assessment, I was asked to foucus on contents indices. Here's part of th
     - `Argument parse`:  
     I leveraged built-in `argparse` package and do some little extension to the reqiurements in case in the future I'll be asked to make the app more flexible.
     I decided to allow the user to customize the mirror source and choose to display top k package statistics. If not explicted assigned, the application will follow the default requirements Jon offered.
-    - `Singleton configuration`:
-    - `Downloader`:
-    - `Parser`:
-    - `Procedure of statistics`:
-## 6. Credits and Acknowledgments
+    - `Singleton configuration`:  
+    I realized the configuration would be used multiple times, but there's no need to create multiple instances which would cause a waste of resources and negatively effect the performance of the app, so I applied Singleton pattern to the Config class.
+    The first time we create a Config instance, it will read `config.json` in the root directory to initilize the configureation. I exposed various methods like `get_mirror_src` and `set_mirror_src` to let other modules have access to the configureation safely.
+    - `Downloader`:  
+    The Downloader module is in charge of downloading and decompressing the target contents file. The downloader instance will conduct the job based on the configureation injected.  
+    I used `try-except` blocks to capture potential exceptions in this process and make the program exit elegantly with readable error messages. 
+    - `Parser`:  
+    The Parser aims to do the statistics to the valid, decompressed, and decoded contents file as a string.  
+    As it is described in [Description of contents file format](https://wiki.debian.org/RepositoryFormat#A.22Contents.22_indices):
+        > Clients should ignore lines not conforming to this scheme.
+    
+        I process the contents file line by line, splitting each line into 2 columns, and ignoring lines which don't contains excat 2 columns. After that, I split the second column based on `","`, since the contents file guarantees there won't be white space in package names.  
+        I leveraged nuilt-in `collections.Counter` to do the statistics, and passed the whole result to the next stage.
+    - `Procedure of statistics`:  
+    In this part, I defined a function to organize all the previous components in a pipe line and output the required results.  
+    I hope the displayed statistics to be consistent in format no matter how many packages (top k) the user wants to see. So I used a indent calculator defined in `utils.py` to calculate the index indent to make the output column names align with the package names and file numbers.
+
+   I tried to decouple components when designing the application and used proper design patterns and structure strategy to make the application iterable and safe to run. I hope you will like my work, and you are welcome to offer any suggestions.
+## 6. Acknowledgments
 **Author:** Fanglei Cai  
 **Email:** [caifanglei1998@gmail.com](mailto:caifanglei1998@gmail.com)
